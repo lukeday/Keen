@@ -29,8 +29,43 @@
 
     <jsp:include page="/includes.jsp"/>
 	<link type="text/css" href="css/skins/jplayer.blue.monday.css" rel="stylesheet" />
+	<script type="text/javascript" src="/js/bootstrap-modal.js"> </script>
 	<script type="text/javascript" src="/js/jquery.jplayer.min.js"> </script>
 	<script type="text/javascript" src="/js/jplayer.playlist.min.js"></script>
+	<script type="text/javascript">
+	function doDelete(){
+			matches = $(':checked');
+				var ids = "";
+				for(i = 0; i < matches.length; i++){
+					ids += matches[i].name + "|";
+				}
+				for(i = 0; i < matches.length; i++){
+					$('#' + matches[i].name).remove();
+				}
+				$.post('/'+ page,{action: "delete", id: ids });
+
+			}
+			
+			function doEdit(){
+			console.log("in doEdit");
+				matches = $(':checked');
+				var ids = "";
+				for(i = 0; i < matches.length; i++){
+					ids += matches[i].name + "|";
+				}
+				var songName = document.getElementById("songName").value;
+				var album = document.getElementById("album").value;
+				var artist = document.getElementById("artist").value;
+				var genre = document.getElementById("genre").value;
+				var comment = document.getElementById("comment").value;
+				var tags = document.getElementById("tags").value;
+				var rating = document.getElementById("rating").value;
+				
+				$.post('/'+ page,{action: "edit", id: ids, "songName":songName, "album":album,"artist":artist,"genre":genre,"comment":comment, "tags":tags, "rating":rating });
+					console.log("after post");
+					return false;
+			}
+	</script>
 	<script type="text/javascript">
 	var myPlaylist;
 	$(document).ready(function(){
@@ -125,6 +160,81 @@
 				<div class="page-header">
 				<h1>Music <small><a href="/upload.jsp?music=1">Upload Music</a></small></h1>
 				</div>
+				
+			<div id="editModal" class="modal hide fade">
+            <div class="modal-header">
+              <a href="#" class="close">&times;</a>
+              <h3>Edit</h3>
+            </div>
+			
+            <div class="modal-body">
+			
+			<form id="image" onSubmit="doEdit();" action="" method="post" enctype="multipart/form-data">
+				<input type="hidden" name="content" value="image" />
+				<div class="clearfix">
+					<label for="">Song Name</label>
+					<div class="input">
+						<input type="text" id="songName" name="songName" class="xlarge" placeholder="Unchanged"> 
+					</div>
+				</div>
+				<div class="clearfix">
+					<label for="">Album</label>
+					<div class="input">
+						<input type="text" id="album" name="album" class="xlarge" placeholder="Unchanged"> 
+					</div>
+				</div>
+				<div class="clearfix">
+					<label for="">Artist</label>
+					<div class="input">
+						<input type="text" id="artist" name="artist" class="xlarge" placeholder="Unchanged"> 
+					</div>
+				</div>
+				<div class="clearfix">
+					<label for="">Genre</label>
+					<div class="input">
+						<input type="text" id="genre" name="genre" class="xlarge" placeholder="Unchanged"> 
+					</div>
+				</div>
+				<div class="clearfix">
+					<label for="">Comment</label>
+					<div class="input">
+						<textarea class="xlarge" id="comment" name="comment" placeholder="Unchanged"></textarea>
+					</div>
+				</div>
+				<div class="clearfix">
+					<label for="">Tags (Use ";" to seperate)</label>
+					<div class="input">
+						<input type="text" id="tags" name="tags" class="xlarge" placeholder="Unchanged"> 
+					</div>
+				</div>
+				<div class="clearfix">
+					<label for="">Rating</label>
+					<div class="input">
+						<select name="rating" id="rating">
+							<option value="0"> Unchanged </option>
+							<option value="1"> 1 </option>
+							<option value="2"> 2 </option>
+							<option value="3"> 3 </option>
+							<option value="4"> 4 </option>
+							<option value="5"> 5 </option>
+							<option value="6"> 6 </option>
+							<option value="7"> 7 </option>
+							<option value="8"> 8 </option>
+							<option value="9"> 9 </option>
+							<option value="10"> 10 </option>
+						</select> 
+					</div>
+				</div>
+            </div>
+            <div class="modal-footer">
+				<button class="btn primary">Commit</button>
+			</div>
+			</form>
+		</div>
+		
+		<button class="btn danger" style="float:right; margin-top:-55px;" onclick="doDelete();">Delete</button>
+		<button class="btn danger" style="float:right; margin-top:-55px; margin-right:80px;" data-controls-modal="editModal" data-backdrop="true" data-keyboard="true">Edit</button>
+				
 				<table class="zebra-striped" id="musicTable">
 					<thead>
 						<tr> 
@@ -137,7 +247,8 @@
 							<th class="red header">Disc</th>
 							<th class="green header">Tags</th>
 							<th class="blue header">Download</th>
-							<th class="red header">Delete</th>
+							<th class="blue header">Delete</th>
+							<th class='red header'>Select</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -149,7 +260,7 @@
 				for (String tag : music.tags)
 					temp += "<span class=\"label success\">" + tag + "</span> ";
 				%>
-				<tr id="<%=i%>">
+				<tr id="<%=music.id%>">
 					<td> <%=music.songName%></td>
 					<td> <%=music.album%></td>
 					<td> <%=music.artist%> </td>
@@ -161,9 +272,10 @@
 							
 					<td> <a class="btn info" href="<%= "/download?filename=" + music.songName + "&blob-key=" + music.data.getKeyString() %>">Download</a> </td>
 					<td> <button class="btn danger" onclick="deleteData(<%=music.id%>,'#<%=i%>');">Delete</button> </td>
+					<td> <input type="checkbox" name="<%=music.id%>"/> </td>
 				</tr>
 				<script type="text/javascript">
-					$("#<%=i%>").click(function() {
+					$("#<%=music.id%>").click(function() {
 						myPlaylist.add( {
 							title:"<%=music.songName%>",
 							artist:"<%=music.artist%>",

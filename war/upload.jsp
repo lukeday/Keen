@@ -38,12 +38,6 @@
 			<form id="image" action="<%= uploadUrl %>" method="post" enctype="multipart/form-data">
 				<input type="hidden" name="content" value="image" />
 				<div class="clearfix">
-					<label for="">Artist</label>
-					<div class="input">
-						<input type="text" name="artist" class="xlarge" size="30"> 
-					</div>
-				</div>
-				<div class="clearfix">
 					<label for="">Title</label>
 					<div class="input">
 						<input type="text" name="title" class="xlarge"> 
@@ -129,13 +123,7 @@
 					</div>
 				</div>
 				<div class="clearfix">
-					<label for="">Comment</label>
-					<div class="input">
-						<textarea class="xxlarge" name="comment"></textarea>
-					</div>
-				</div>
-				<div class="clearfix">
-					<label for="">Actors</label>
+					<label for="">Actors (Use ";" to seperate)</label>
 					<div class="input">
 						<textarea class="xxlarge" name="actors"></textarea>
 					</div>
@@ -150,35 +138,6 @@
 					<label for="">File to Store</label>
 					<div class="input">
 						<input type="file" name="myFile" class="input-file"> 
-					</div>
-				</div>
-				<div class="clearfix">
-					<label for="">Box Art</label>
-					<div class="input">
-						<input type="file" name="art" class="input-file"> 
-					</div>
-				</div>
-				<div class="clearfix">
-					<label for="">Length</label>
-					<div class="input">
-						<input type="text" name="length" class="xlarge"> 
-					</div>
-				</div>
-				<div class="clearfix">
-					<label for="">Rating</label>
-					<div class="input">
-						<select name="Rating">
-							<option value="1"> 1 </option>
-							<option value="2"> 2 </option>
-							<option value="3"> 3 </option>
-							<option value="4"> 4 </option>
-							<option value="5"> 5 </option>
-							<option value="6"> 6 </option>
-							<option value="7"> 7 </option>
-							<option value="8"> 8 </option>
-							<option value="9"> 9 </option>
-							<option value="10"> 10 </option>
-						</select> 
 					</div>
 				</div>
 				<div class="actions">
