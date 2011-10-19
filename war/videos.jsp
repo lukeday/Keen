@@ -31,7 +31,93 @@
 	<script type="text/javascript" src="/js/bootstrap-modal.js"> </script>
 	<script type="text/javascript" src="/js/jquery.jplayer.min.js"> </script>
 	<script type="text/javascript" src="/js/jplayer.playlist.min.js"></script>
+	<%
+    	Query<Video> query = dao.ofy().query(Video.class).filter("owner",fred.getUserId());
+    %>
+    
 	<script type="text/javascript">
+	<%
+			if (query.count() == 0) {
+			%>
+			var videoList = [];
+			<% } else {
+			%>
+				var videoList = [
+				<%
+				int i = 0;
+				for (Video vid : query) {
+					String temp = "", temp1="";
+				for (String tag : vid.tags)
+					temp += "<span class=\"label success\">" + tag + "</span> ";
+				for (String actor : vid.actors)
+					temp1 += "<span class=\"label success\">" + actor + "</span> ";
+				%>
+						{
+					id: '<%= vid.id%>',
+					title: '<%= vid.title %>',
+					data: '<%= vid.data %>',
+					director: "<%= vid.director %>",
+					tags: '<%= temp %>',
+					actors: '<%= temp1 %>'
+					<% if (i != query.count() - 1) { %>
+					},
+					<% } else { %>
+					}
+					<%} %>
+				<% ++i;
+				}
+				%>
+				];
+				<% } %>
+		</script>
+		<script type="text/javascript">
+			function addAllVideos() {
+				for (x in videoList) {
+
+						addNewTableRow(videoList[x]);
+						
+						$('#'+videoList[x].id).click(function() {
+						myPlaylist.add( {
+							title:videoList[x].title,
+							artist:videoList[x].director,
+							m4v:"/serve?blob-key=" + videoList[x].data,
+						});
+					});
+					
+				}
+				$("#videoTable").tablesorter({ sortList: [[1.0]] });
+
+			}
+			
+			function addNewTableRow(video) {
+				
+				$('#videoTable tbody').append('<tr id="' + video.id + 
+											  '"> <td>' +video.title + 
+											  '</td> <td>' + video.director + 
+											  '</td> <td>' + video.actors +
+											  '</td> <td> ' + video.tags +
+											  '</td> <td> <a class="btn info" href="/serve?blob-key=' + video.data + 
+											  '">Download</a> </td> '+ 
+											  '<td> <input type="checkbox" name="' + video.id + '"/> </td> </tr>');
+			}
+			
+			function search(){
+				
+				searchStr = document.getElementById('searchBox').value;
+				console.log("in search");
+				for (x in videoList) {
+					if(searchStr == "" || 
+					   videoList[x].title.match(searchStr) ||
+					   videoList[x].director.match(searchStr) ||
+					   videoList[x].actors.match(searchStr) ||
+					   videoList[x].tags.match(searchStr)){
+						document.getElementById(videoList[x].id).style.display = '';
+					} else{
+						document.getElementById(videoList[x].id).style.display = 'none';
+					}
+				}
+			}
+			
 	function doDelete(){
 			matches = $(':checked');
 				var ids = "";
@@ -65,7 +151,10 @@
 	<script type="text/javascript">
 	var myPlaylist;
 	$(document).ready(function(){
-			page = "video";
+			document.getElementById('searchBox').addEventListener('keyup', search ,false);
+					page = "video";
+					addAllVideos();
+			
 
 	myPlaylist = new jPlayerPlaylist({
 		jPlayer: "#jquery_jplayer_1",
@@ -156,9 +245,6 @@
 		</div>
 			<!-- info -->
 			<div class="content" style="margin-left:680px">
-			<%
-			Query<Video> query = dao.ofy().query(Video.class).filter("owner",fred.getUserId());
-			%>
 				<div class="page-header">
 				<h1>Video <small><a href="/upload.jsp?video=1">Upload Video</a></small></h1>
 				</div>
@@ -171,7 +257,7 @@
 				
 				<!-- Modal -->
 				<div class="modal-body">
-					<form id="image" onSubmit="doEdit();" action="" method="post" enctype="multipart/form-data">
+					<form id="video" onSubmit="doEdit();" action="" method="post" enctype="multipart/form-data">
 						<div class="clearfix">
 							<label for="">Title</label>
 							<div class="input">
@@ -205,7 +291,7 @@
 				</div>
 				<!-- End Modal -->
 
-				<button class="btn danger" style="float:right; margin-top:-55px;" onclick="doDelete();">Delete</button>
+				<button class="btn danger" style="float:right; margin-top:-55px;" onClick="doDelete();">Delete</button>
 				<button class="btn danger" style="float:right; margin-top:-55px; margin-right:80px;" data-controls-modal="editModal" data-backdrop="true" data-keyboard="true">Edit</button>
 
 				<table class="zebra-striped" id="videoTable">
@@ -220,38 +306,7 @@
 						</tr>
 					</thead>
 					<tbody>
-			<%
-				int i = 0;
-				for (Video video : query) {
-				String tags = "";
-				String actors = "";
-				for (String tag : video.tags)
-					tags += "<span class=\"label success\">" + tag + "</span> ";
-				for (String actor : video.actors)
-					actors += actor + ",";
-				%>
-				<tr id="<%=video.id%>">
-					<td> <%=video.title%></td>
-					<td> <%=video.director%> </td>
-					<td> <%=actors%> </td>
-					<td> <%=tags%> </td>
-					<td> <a class="btn info" href="<%="/download?filename=" + video.title + "&blob-key=" + video.data.getKeyString()%>">Download</a> </td>
-					<td> <input type="checkbox" name="<%=video.id%>"/> </td>
-				</tr>
-				<script type="text/javascript">
-					$("#<%=video.id%>").click(function() {
-						myPlaylist.add( {
-							title:"<%=video.title%>",
-							artist:"<%=video.director%>",
-							m4v:"<%= "/serve?blob-key=" + video.data.getKeyString() %>",
-						});
-					});
-				</script>
-				<%
-				i++;
-				}
-				%>
-			</tbody>
+					</tbody>
 			</table>
 		</div>
 		</div>

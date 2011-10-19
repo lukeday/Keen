@@ -79,7 +79,7 @@
 			<br/><br/>
 
 			<div class="page-header">
-				<h2>So this must cost heaps, right?</h2>
+				<h2>So this must cost heaps, right?<small> Nope.</small></h2>
 			</div>
 			<!-- Table structure -->
 			<div class="row">

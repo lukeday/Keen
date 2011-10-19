@@ -30,12 +30,6 @@
 						<li> <a href="<%= us.createLogoutURL(request.getRequestURI())%>">Sign Out</a> </li>
 					</ul>
 					</li>
-					<script>
-					if(document.location.href == 'http://keenmediavault.appspot.com/'){
-						$('#container').prepend('
-
-						}
-					</script>
 					<% } else { %>
 					<li id="signIn" data-content="To access all of Keen Media Vault's awesome features you need to sign in.<br/><br/>Click 'Sign In' above to login with your google account and get started!" rel="popover" href="#" data-original-title="Your not signed in!"><a href="<%= us.createLoginURL(request.getRequestURI())%>">Sign In</a><li>
 					<script>
