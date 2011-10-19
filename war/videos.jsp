@@ -216,7 +216,6 @@
 							<th class="green header">Actors</th>
 							<th class="red header">Tags</th>
 							<th class="blue header">Download</th>
-							<th class="blue header">Delete</th>
 							<th class="red header">Select</th>
 						</tr>
 					</thead>
@@ -237,7 +236,6 @@
 					<td> <%=actors%> </td>
 					<td> <%=tags%> </td>
 					<td> <a class="btn info" href="<%="/download?filename=" + video.title + "&blob-key=" + video.data.getKeyString()%>">Download</a> </td>
-					<td> <button class="btn danger" onclick="deleteData(<%=video.id%>,'#<%=i%>');">Delete</button> </td>
 					<td> <input type="checkbox" name="<%=video.id%>"/> </td>
 				</tr>
 				<script type="text/javascript">
