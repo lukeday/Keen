@@ -25,8 +25,8 @@ import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import keen.shared.*;
 import keen.metaParsing.Music.*;
-import keen.metaParsing.*;
 
+@SuppressWarnings("serial")
 public class Upload extends HttpServlet {
 	public static final Logger log = Logger.getLogger(Upload.class.getName());
 	private BlobstoreService blobServ = BlobstoreServiceFactory.getBlobstoreService();

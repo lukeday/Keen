@@ -13,10 +13,7 @@ import java.util.ArrayList;
 import java.util.logging.Logger;
 
 import com.google.appengine.api.blobstore.BlobKey;
-import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
-import com.google.appengine.api.datastore.Rating;
-import com.google.appengine.api.datastore.Text;
 
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
@@ -26,6 +23,7 @@ import com.googlecode.objectify.*;
 
 import keen.shared.*;
 
+@SuppressWarnings("serial")
 public class VideoServlet extends HttpServlet {
 	public static final Logger log = Logger.getLogger(Upload.class.getName());
 
@@ -143,25 +141,5 @@ public class VideoServlet extends HttpServlet {
 				dao.ofy().put(video);
 			}
 		}
-	}
-
-	private void videoBlobs(Video video, List<BlobKey> markedBlobs) {
-		if (video.data != null)
-			markedBlobs.add(video.data);
-		if (video.artData != null)
-			markedBlobs.add(video.artData);
-	}
-
-	private Long parseId(String sid) {
-		try {
-			Long id = Long.parseLong(sid);
-			if (id <= 0L)
-				return null;
-			return id;
-		} catch(Exception e) {
-
-		}
-		return null;
-
 	}
 }

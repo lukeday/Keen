@@ -2,7 +2,6 @@ package keen.server;
 
 import java.io.IOException;
 
-import javax.persistence.metamodel.Map;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -14,7 +13,6 @@ import java.util.ArrayList;
 import java.util.logging.Logger;
 
 import com.google.appengine.api.blobstore.BlobKey;
-import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 import com.google.appengine.api.datastore.Rating;
 import com.google.appengine.api.datastore.Text;
@@ -28,6 +26,7 @@ import com.googlecode.objectify.*;
 
 import keen.shared.*;
 
+@SuppressWarnings("serial")
 public class ImageServlet extends HttpServlet {
 	public static final Logger log = Logger.getLogger(Upload.class.getName());
 
@@ -142,23 +141,5 @@ public class ImageServlet extends HttpServlet {
 				dao.ofy().put(image);
 			}
 		}
-	}
-
-	private void imageBlobs(Image image, List<BlobKey> markedBlobs) {
-		if (image.data != null)
-			markedBlobs.add(image.data);
-	}
-
-	private Long parseId(String sid) {
-		try {
-			Long id = Long.parseLong(sid);
-			if (id <= 0L)
-				return null;
-			return id;
-		} catch(Exception e) {
-
-		}
-		return null;
-
 	}
 }

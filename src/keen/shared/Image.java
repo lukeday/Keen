@@ -26,11 +26,6 @@ public class Image {
 	@NotSaved(IfDefault.class) public Text comment = null;
 	public Date date;
 
-
-	private Image() {
-
-	}
-
 	public Image(String owner, String title,
 			String artist,BlobKey data,
 			Rating rating,String[] tags,

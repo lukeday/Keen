@@ -26,11 +26,6 @@ public class Video {
 	@NotSaved(IfDefault.class) public Rating rating = null;
 	@NotSaved(IfDefault.class) public Text comment = null;
 
-
-	private Video() {
-
-	}
-
 	public Video(String owner,int length,
 			String title, String director,
 			String[] actors,String[] tags,

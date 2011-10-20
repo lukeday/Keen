@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.logging.Logger;
 
 import com.google.appengine.api.blobstore.BlobKey;
-import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 import com.google.appengine.api.datastore.Rating;
 import com.google.appengine.api.datastore.Text;
@@ -26,6 +25,7 @@ import com.googlecode.objectify.*;
 
 import keen.shared.*;
 
+@SuppressWarnings("serial")
 public class MusicServlet extends HttpServlet {
 	public static final Logger log = Logger.getLogger(Upload.class.getName());
 
@@ -155,25 +155,5 @@ public class MusicServlet extends HttpServlet {
 				dao.ofy().put(music);
 			}
 		}
-	}
-
-	private void musicBlobs(Music music, List<BlobKey> markedBlobs) {
-		if (music.data != null)
-			markedBlobs.add(music.data);
-		if (music.artData != null)
-			markedBlobs.add(music.artData);
-	}
-
-	private Long parseId(String sid) {
-		try {
-			Long id = Long.parseLong(sid);
-			if (id <= 0L)
-				return null;
-			return id;
-		} catch(Exception e) {
-
-		}
-		return null;
-
 	}
 }

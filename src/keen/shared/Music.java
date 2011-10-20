@@ -4,7 +4,6 @@ import javax.persistence.Id;
 import java.util.List;
 import java.util.ArrayList;
 
-import javax.persistence.Id;
 import com.google.appengine.api.datastore.Rating;
 import com.google.appengine.api.datastore.Text;
 import com.google.appengine.api.blobstore.BlobKey;
