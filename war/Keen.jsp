@@ -45,7 +45,7 @@
 			<div class="row">
 				<div class="span12">
 					<p>
-						Keen Media Vault is a cloaud based service to which you can upload your images, music and video files.  
+						Keen Media Vault is a cloud based service to which you can upload your images, music and video files.  
 						This allows you to view, play and/or download them from anywhere with an internet connection.
 						<br/><br/>
 						Once you begin using KMV you can upload your files to the cloud where they are secure from physical harm 
